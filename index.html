@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>夏天去中国 — Carnet de voyage</title>
+<style>
+:root{
+  --paper:#F7F1E3;
+  --paper-dark:#EFE6D2;
+  --ink:#1F2B24;
+  --ink-soft:#4A5750;
+  --seal:#C23B3B;
+  --seal-dark:#9C2B2B;
+  --tea:#5C7A5C;
+  --tea-dark:#3F5A40;
+  --amber:#D9A441;
+  --amber-dark:#B5822E;
+  --line:#D8CBA8;
+  --shadow:0 4px 14px rgba(31,43,36,0.12);
+  --radius:14px;
+  --safe-top:env(safe-area-inset-top, 0px);
+  --safe-bottom:env(safe-area-inset-bottom, 0px);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+
+body{
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(92,122,92,0.05), transparent 40%),
+    radial-gradient(circle at 85% 92%, rgba(194,59,59,0.05), transparent 40%);
+  color:var(--ink);
+  font-family:'Source Han','Noto Sans SC','PingFang SC',-apple-system,system-ui,sans-serif;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+@font-face{
+  font-family:'DisplaySerif';
+  src:local('Songti SC'), local('STSong'), local('Noto Serif SC');
+}
+
+.app{
+  max-width:560px;
+  margin:0 auto;
+  min-height:100vh;
+  position:relative;
+  padding-top:var(--safe-top);
+  padding-bottom:var(--safe-bottom);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------- Typography ---------- */
+h1,h2,h3,.display{
+  font-family:'Noto Serif SC','Songti SC',serif;
+  font-weight:700;
+  letter-spacing:0.01em;
+}
+.hanzi{
+  font-family:'Noto Sans SC','PingFang SC',sans-serif;
+}
+.pinyin{
+  font-family:'Courier New',monospace;
+  color:var(--ink-soft);
+  font-size:0.85em;
+}
+
+/* ---------- Screens ---------- */
+.screen{
+  flex:1;
+  display:none;
+  flex-direction:column;
+  animation:fadeIn 0.25s ease;
+}
+.screen.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .screen{animation:none;}
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 20px 10px;
+  position:sticky;
+  top:0;
+  background:var(--paper);
+  z-index:10;
+  border-bottom:1px solid var(--line);
+}
+.topbar .back-btn{
+  background:none;border:none;color:var(--ink);font-size:1.5rem;
+  cursor:pointer;padding:4px 8px;line-height:1;
+}
+.topbar .title{
+  font-size:1.05rem;
+  text-align:center;
+  flex:1;
+}
+.topbar .score-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--amber);
+  color:#3A2A0A;
+  padding:5px 11px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:0.85rem;
+  white-space:nowrap;
+}
+
+/* ---------- Login screen ---------- */
+#screen-login{justify-content:center;padding:24px;}
+.login-hero{
+  text-align:center;
+  margin-bottom:28px;
+}
+.login-hero .stamp{
+  width:88px;height:88px;
+  margin:0 auto 18px;
+  border:3px solid var(--seal);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-4deg);
+  color:var(--seal);
+  font-size:2.6rem;
+  font-family:'Noto Serif SC',serif;
+}
+.login-hero h1{
+  font-size:1.9rem;
+  margin:0 0 6px;
+  color:var(--ink);
+}
+.login-hero p{
+  color:var(--ink-soft);
+  margin:0;
+  font-size:0.95rem;
+}
+.login-card{
+  background:var(--paper-dark);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+.field{margin-bottom:14px;}
+.field label{
+  display:block;
+  font-size:0.8rem;
+  color:var(--ink-soft);
+  margin-bottom:5px;
+  font-weight:600;
+}
+.field input{
+  width:100%;
+  padding:12px 14px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  background:var(--paper);
+  font-size:1rem;
+  color:var(--ink);
+  font-family:inherit;
+}
+.field input:focus{
+  outline:2px solid var(--tea);
+  outline-offset:1px;
+  border-color:var(--tea);
+}
+.btn{
+  display:block;
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:none;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+  text-align:center;
+}
+.btn:focus-visible{outline:2px solid var(--ink); outline-offset:2px;}
+.btn-primary{background:var(--seal); color:#FFF6EC;}
+.btn-primary:active{background:var(--seal-dark);}
+.btn-secondary{background:transparent; color:var(--tea-dark); border:1.5px solid var(--tea); margin-top:10px;}
+.btn-ghost{background:none; color:var(--ink-soft); font-size:0.85rem; text-decoration:underline; padding:8px;}
+.login-error{
+  color:var(--seal-dark);
+  font-size:0.85rem;
+  margin-top:8px;
+  min-height:1.2em;
+}
+.login-toggle{
+  text-align:center;
+  margin-top:16px;
+  font-size:0.88rem;
+  color:var(--ink-soft);
+}
+.login-toggle button{
+  background:none;border:none;color:var(--tea-dark);font-weight:700;cursor:pointer;font-size:0.88rem;text-decoration:underline;
+}
+
+/* ---------- Home screen ---------- */
+#screen-home .home-header{
+  padding:20px 20px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.greeting{
+  font-size:1.3rem;
+}
+.greeting .hanzi{color:var(--seal);}
+.icon-btn{
+  background:none;border:none;color:var(--ink-soft);font-size:1.4rem;cursor:pointer;padding:6px;
+}
+.stats-row{
+  display:flex;
+  gap:10px;
+  padding:6px 20px 18px;
+}
+.stat-card{
+  flex:1;
+  background:var(--paper-dark);
+  border-radius:12px;
+  padding:14px 12px;
+  text-align:center;
+  border:1px solid var(--line);
+}
+.stat-card .num{
+  font-size:1.5rem;
+  font-weight:800;
+  color:var(--seal);
+  display:block;
+  font-family:'Noto Serif SC',serif;
+}
+.stat-card .lbl{
+  font-size:0.72rem;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+
+.section-label{
+  padding:4px 20px;
+  font-size:0.78rem;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--ink-soft);
+  font-weight:700;
+  margin-top:10px;
+}
+
+.mode-cards{
+  padding:8px 20px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.mode-card{
+  background:var(--paper-dark);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  text-align:left;
+  width:100%;
+  font-family:inherit;
+}
+.mode-card:active{transform:scale(0.985);}
+.mode-card .ic{
+  width:50px;height:50px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+  flex-shrink:0;
+}
+.mode-card.tea .ic{background:#E3ECE3; color:var(--tea-dark);}
+.mode-card.seal .ic{background:#F4DCDC; color:var(--seal-dark);}
+.mode-card .txt h3{margin:0 0 3px; font-size:1.05rem;}
+.mode-card .txt p{margin:0; font-size:0.83rem; color:var(--ink-soft);}
+
+/* ---------- List screens (chapters / categories) ---------- */
+.list-wrap{padding:14px 16px 24px;}
+.list-item{
+  background:var(--paper-dark);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  width:100%;
+  text-align:left;
+  font-family:inherit;
+}
+.list-item:active{transform:scale(0.99);}
+.list-item .badge{
+  width:38px;height:38px;
+  border-radius:50%;
+  background:var(--tea);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+  font-size:0.95rem;
+  flex-shrink:0;
+}
+.list-item.done .badge{background:var(--amber);}
+.list-item .info{flex:1;}
+.list-item .info h4{margin:0 0 2px; font-size:0.98rem;}
+.list-item .info .sub{font-size:0.8rem; color:var(--ink-soft);}
+.list-item .progress-mini{
+  font-size:0.75rem;
+  color:var(--tea-dark);
+  font-weight:700;
+  white-space:nowrap;
+}
+.chip{
+  display:inline-block;
+  font-size:0.68rem;
+  padding:2px 8px;
+  border-radius:999px;
+  background:var(--tea);
+  color:#fff;
+  font-weight:700;
+  margin-left:6px;
+  vertical-align:middle;
+}
+
+/* ---------- Exercise list within chapter ---------- */
+.chapter-banner{
+  padding:18px 20px;
+  background:var(--paper-dark);
+  border-bottom:1px solid var(--line);
+  text-align:center;
+}
+.chapter-banner .hanzi{font-size:1.4rem; color:var(--seal); display:block; margin-bottom:2px;}
+.chapter-banner .fr{font-size:0.9rem; color:var(--ink-soft);}
+
+/* ---------- Exercise runner ---------- */
+.runner{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:0 20px 24px;
+}
+.progress-track{
+  height:6px;
+  background:var(--line);
+  border-radius:999px;
+  margin:14px 0 22px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--tea);
+  border-radius:999px;
+  transition:width 0.3s ease;
+}
+.q-counter{
+  font-size:0.78rem;
+  color:var(--ink-soft);
+  text-align:center;
+  margin-bottom:4px;
+  font-weight:600;
+}
+.prompt-card{
+  background:var(--paper-dark);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:28px 22px;
+  text-align:center;
+  margin-bottom:20px;
+  min-height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.prompt-card .big-hanzi{
+  font-size:2.6rem;
+  line-height:1.3;
+}
+.prompt-card .sentence{
+  font-size:1.5rem;
+  line-height:1.6;
+}
+.prompt-card .meaning-prompt{
+  font-size:1.05rem;
+  color:var(--ink);
+  line-height:1.5;
+}
+
+.options-grid{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.opt-btn{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px;
+  font-size:1rem;
+  text-align:left;
+  cursor:pointer;
+  font-family:inherit;
+  color:var(--ink);
+}
+.opt-btn:active{transform:scale(0.99);}
+.opt-btn.correct{
+  background:#E3ECE3;
+  border-color:var(--tea);
+  color:var(--tea-dark);
+  font-weight:700;
+}
+.opt-btn.wrong{
+  background:#F4DCDC;
+  border-color:var(--seal);
+  color:var(--seal-dark);
+  font-weight:700;
+}
+.opt-btn:disabled{cursor:default;}
+
+.input-area{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.input-area input{
+  width:100%;
+  padding:14px 16px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--paper);
+  font-size:1.1rem;
+  font-family:inherit;
+  color:var(--ink);
+}
+.input-area input:focus{outline:2px solid var(--tea); outline-offset:1px; border-color:var(--tea);}
+
+.feedback-box{
+  border-radius:12px;
+  padding:16px 18px;
+  margin-top:14px;
+  font-size:0.92rem;
+  line-height:1.5;
+}
+.feedback-box.ok{background:#E3ECE3; color:var(--tea-dark); border:1px solid var(--tea);}
+.feedback-box.ko{background:#F4DCDC; color:var(--seal-dark); border:1px solid var(--seal);}
+.feedback-box .fb-title{font-weight:800; display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+.feedback-box .solution-line{
+  font-size:1.05rem;
+  color:var(--ink);
+  font-weight:600;
+  margin-top:4px;
+}
+
+.selfcheck-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+.selfcheck-buttons button{
+  flex:1;
+  padding:13px;
+  border-radius:10px;
+  border:1.5px solid var(--line);
+  font-weight:700;
+  font-size:0.95rem;
+  cursor:pointer;
+  font-family:inherit;
+  background:var(--paper);
+  color:var(--ink);
+}
+.selfcheck-buttons .sc-ok{border-color:var(--tea); color:var(--tea-dark);}
+.selfcheck-buttons .sc-ko{border-color:var(--seal); color:var(--seal-dark);}
+
+.runner-footer{
+  margin-top:auto;
+  padding-top:18px;
+}
+
+/* Stamp animation for correct answers */
+.stamp-pop{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.3) rotate(-12deg);
+  width:120px;height:120px;
+  border:5px solid var(--seal);
+  border-radius:14px;
+  color:var(--seal);
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;
+  font-family:'Noto Serif SC',serif;
+  background:rgba(247,241,227,0.92);
+  opacity:0;
+  pointer-events:none;
+  z-index:999;
+  transition:opacity 0.18s ease, transform 0.32s cubic-bezier(.34,1.56,.64,1);
+}
+.stamp-pop.show{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1) rotate(-8deg);
+}
+
+/* ---------- Flashcard ---------- */
+.flashcard{
+  background:var(--paper-dark);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:40px 22px;
+  text-align:center;
+  min-height:200px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  gap:10px;
+}
+.flashcard .fc-hanzi{font-size:3.4rem;}
+.flashcard .fc-pinyin{font-size:1.1rem; color:var(--ink-soft);}
+.flashcard .fc-meaning{font-size:1.2rem; color:var(--tea-dark); font-weight:700;}
+.flashcard .fc-hint{font-size:0.78rem; color:var(--ink-soft); margin-top:10px;}
+
+/* ---------- Result screen ---------- */
+#screen-result{justify-content:center; padding:24px; text-align:center;}
+.result-stamp{
+  width:120px;height:120px;
+  margin:0 auto 20px;
+  border:4px solid var(--seal);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--seal);
+  font-size:3rem;
+  font-family:'Noto Serif SC',serif;
+  transform:rotate(-5deg);
+}
+.result-score{
+  font-size:2.4rem;
+  font-weight:800;
+  color:var(--ink);
+  margin:0 0 4px;
+}
+.result-sub{color:var(--ink-soft); margin-bottom:28px;}
+.result-points{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--amber);
+  color:#3A2A0A;
+  padding:8px 16px;
+  border-radius:999px;
+  font-weight:700;
+  margin-bottom:28px;
+}
+
+/* ---------- Leaderboard ---------- */
+.lb-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 16px;
+  background:var(--paper-dark);
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin-bottom:8px;
+}
+.lb-rank{
+  width:28px;height:28px;
+  border-radius:50%;
+  background:var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;
+  font-size:0.85rem;
+  flex-shrink:0;
+}
+.lb-row.me{border-color:var(--seal); background:#F9ECEC;}
+.lb-row:nth-child(1) .lb-rank{background:var(--amber); color:#3A2A0A;}
+.lb-name{flex:1; font-weight:600;}
+.lb-pts{font-weight:800; color:var(--seal-dark);}
+
+/* ---------- empty state ---------- */
+.empty-state{
+  text-align:center;
+  padding:60px 24px;
+  color:var(--ink-soft);
+}
+.empty-state .ic{font-size:2.4rem; margin-bottom:10px; display:block;}
+
+footer.legal{
+  text-align:center;
+  font-size:0.7rem;
+  color:var(--ink-soft);
+  padding:10px;
+  opacity:0.6;
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- LOGIN SCREEN -->
+  <section class="screen active" id="screen-login">
+    <div class="login-hero">
+      <div class="stamp">夏</div>
+      <h1>夏天去中国！</h1>
+      <p>Carnet de voyage en Chine — 6e LVB</p>
+    </div>
+    <div class="login-card">
+      <div id="login-mode-signin">
+        <div class="field">
+          <label for="li-name">Prénom</label>
+          <input id="li-name" type="text" autocomplete="username" placeholder="Ton prénom">
+        </div>
+        <div class="field">
+          <label for="li-pass">Mot de passe</label>
+          <input id="li-pass" type="password" autocomplete="current-password" placeholder="••••••">
+        </div>
+        <div class="login-error" id="login-error"></div>
+        <button class="btn btn-primary" id="btn-signin">Se connecter</button>
+        <div class="login-toggle">Pas encore de compte ? <button id="go-signup">Créer un compte</button></div>
+      </div>
+      <div id="login-mode-signup" style="display:none;">
+        <div class="field">
+          <label for="su-name">Prénom</label>
+          <input id="su-name" type="text" autocomplete="username" placeholder="Ton prénom">
+        </div>
+        <div class="field">
+          <label for="su-pass">Mot de passe</label>
+          <input id="su-pass" type="password" autocomplete="new-password" placeholder="Choisis un mot de passe">
+        </div>
+        <div class="field">
+          <label for="su-pass2">Confirme le mot de passe</label>
+          <input id="su-pass2" type="password" autocomplete="new-password" placeholder="••••••">
+        </div>
+        <div class="login-error" id="signup-error"></div>
+        <button class="btn btn-primary" id="btn-signup">Créer mon compte</button>
+        <div class="login-toggle">Déjà un compte ? <button id="go-signin">Se connecter</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME SCREEN -->
+  <section class="screen" id="screen-home">
+    <div class="home-header">
+      <div class="greeting">你好, <span class="hanzi" id="home-username">朋友</span></div>
+      <button class="icon-btn" id="btn-logout" aria-label="Se déconnecter" title="Se déconnecter">⎋</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="num" id="stat-points">0</span>
+        <span class="lbl">Points</span>
+      </div>
+      <div class="stat-card">
+        <span class="num" id="stat-streak">0</span>
+        <span class="lbl">Caractères vus</span>
+      </div>
+      <div class="stat-card">
+        <span class="num" id="stat-exos">0</span>
+        <span class="lbl">Exercices faits</span>
+      </div>
+    </div>
+
+    <div class="section-label">Explorer</div>
+    <div class="mode-cards">
+      <button class="mode-card tea" id="card-vocab">
+        <div class="ic">字</div>
+        <div class="txt">
+          <h3>Réviser les caractères</h3>
+          <p>16 catégories · QCM, saisie, flashcards</p>
+        </div>
+      </button>
+      <button class="mode-card seal" id="card-cahier">
+        <div class="ic">📖</div>
+        <div class="txt">
+          <h3>Cahier de vacances</h3>
+          <p>8 chapitres · le voyage de Wang Xiaolong</p>
+        </div>
+      </button>
+    </div>
+
+    <div class="section-label">Classement</div>
+    <div class="mode-cards" style="padding-top:0;">
+      <button class="mode-card" id="card-leaderboard" style="background:var(--paper-dark);">
+        <div class="ic" style="background:#EFE0BD;color:var(--amber-dark);">🏆</div>
+        <div class="txt">
+          <h3>Voir le classement</h3>
+          <p>Compare tes points avec les autres comptes</p>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- VOCAB CATEGORY LIST -->
+  <section class="screen" id="screen-vocab-list">
+    <div class="topbar">
+      <button class="back-btn" data-back="screen-home" aria-label="Retour">←</button>
+      <div class="title">Caractères 字</div>
+      <div class="score-pill">🏮 <span id="vocab-score-pill">0</span></div>
+    </div>
+    <div class="list-wrap" id="vocab-list-wrap"></div>
+  </section>
+
+  <!-- VOCAB MODE CHOICE -->
+  <section class="screen" id="screen-vocab-mode">
+    <div class="topbar">
+      <button class="back-btn" data-back="screen-vocab-list" aria-label="Retour">←</button>
+      <div class="title" id="vocab-mode-title">Catégorie</div>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="list-wrap">
+      <button class="list-item" data-mode="qcm">
+        <div class="badge">A</div>
+        <div class="info"><h4>QCM</h4><div class="sub">Choisis le bon sens parmi 4 propositions</div></div>
+      </button>
+      <button class="list-item" data-mode="input">
+        <div class="badge">写</div>
+        <div class="info"><h4>Saisie</h4><div class="sub">Écris le pinyin du caractère</div></div>
+      </button>
+      <button class="list-item" data-mode="flash">
+        <div class="badge">⟲</div>
+        <div class="info"><h4>Flashcards</h4><div class="sub">Retourne la carte pour voir la réponse</div></div>
+      </button>
+    </div>
+  </section>
+
+  <!-- CAHIER CHAPTER LIST -->
+  <section class="screen" id="screen-cahier-list">
+    <div class="topbar">
+      <button class="back-btn" data-back="screen-home" aria-label="Retour">←</button>
+      <div class="title">Cahier de vacances</div>
+      <div class="score-pill">🏮 <span id="cahier-score-pill">0</span></div>
+    </div>
+    <div class="list-wrap" id="cahier-list-wrap"></div>
+  </section>
+
+  <!-- CHAPTER EXERCISE LIST -->
+  <section class="screen" id="screen-chapter">
+    <div class="topbar">
+      <button class="back-btn" data-back="screen-cahier-list" aria-label="Retour">←</button>
+      <div class="title">Chapitre</div>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="chapter-banner">
+      <span class="hanzi" id="chapter-banner-cn"></span>
+      <span class="fr" id="chapter-banner-fr"></span>
+    </div>
+    <div class="list-wrap" id="chapter-exo-wrap"></div>
+  </section>
+
+  <!-- EXERCISE RUNNER -->
+  <section class="screen" id="screen-runner">
+    <div class="topbar">
+      <button class="back-btn" id="runner-exit" aria-label="Quitter l'exercice">✕</button>
+      <div class="title" id="runner-title">Exercice</div>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="runner">
+      <div class="q-counter" id="runner-counter">Question 1 / 10</div>
+      <div class="progress-track"><div class="progress-fill" id="runner-progress" style="width:0%;"></div></div>
+      <div id="runner-body"></div>
+      <div class="runner-footer" id="runner-footer"></div>
+    </div>
+  </section>
+
+  <!-- RESULT SCREEN -->
+  <section class="screen" id="screen-result">
+    <div class="result-stamp" id="result-stamp">好</div>
+    <div class="result-score" id="result-score">8 / 10</div>
+    <div class="result-sub" id="result-sub">Bien joué !</div>
+    <div class="result-points">+ <span id="result-points-num">0</span> points</div>
+    <button class="btn btn-primary" id="result-continue">Continuer</button>
+    <button class="btn btn-secondary" id="result-retry">Refaire cet exercice</button>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section class="screen" id="screen-leaderboard">
+    <div class="topbar">
+      <button class="back-btn" data-back="screen-home" aria-label="Retour">←</button>
+      <div class="title">Classement 🏆</div>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="list-wrap" id="leaderboard-wrap"></div>
+  </section>
+
+</div>
+
+<div class="stamp-pop" id="stamp-pop">好</div>
+
+<script>
+// Vocabulaire chinois 6e LVB - organisé par catégorie
+const VOCAB_CATEGORIES = [
+  {
+    id: "nature",
+    title: "Nature et univers",
+    words: [
+      { c: "日", p: "rì", m: "soleil, jour" },
+      { c: "月", p: "yuè", m: "lune, mois" },
+      { c: "天", p: "tiān", m: "ciel" },
+      { c: "星", p: "xīng", m: "étoile" },
+      { c: "山", p: "shān", m: "montagne" },
+      { c: "川", p: "chuān", m: "rivière" },
+      { c: "木", p: "mù", m: "arbre" },
+      { c: "林", p: "lín", m: "forêt" },
+      { c: "森", p: "sēn", m: "forêt dense" },
+      { c: "水", p: "shuǐ", m: "eau" },
+      { c: "火", p: "huǒ", m: "feu" },
+      { c: "土", p: "tǔ", m: "terre" },
+      { c: "金", p: "jīn", m: "or, métal" },
+      { c: "阴", p: "yīn", m: "yin" },
+      { c: "阳", p: "yáng", m: "yang" },
+      { c: "春", p: "chūn", m: "printemps" },
+      { c: "秋", p: "qiū", m: "automne" },
+      { c: "空", p: "kōng", m: "espace" }
+    ]
+  },
+  {
+    id: "nombres",
+    title: "Nombres et quantités",
+    words: [
+      { c: "零", p: "líng", m: "0" },
+      { c: "一", p: "yī", m: "1" },
+      { c: "二", p: "èr", m: "2" },
+      { c: "三", p: "sān", m: "3" },
+      { c: "四", p: "sì", m: "4" },
+      { c: "五", p: "wǔ", m: "5" },
+      { c: "六", p: "liù", m: "6" },
+      { c: "七", p: "qī", m: "7" },
+      { c: "八", p: "bā", m: "8" },
+      { c: "九", p: "jiǔ", m: "9" },
+      { c: "十", p: "shí", m: "10" },
+      { c: "百", p: "bǎi", m: "100" },
+      { c: "千", p: "qiān", m: "1000" },
+      { c: "万", p: "wàn", m: "10000" },
+      { c: "两", p: "liǎng", m: "deux" },
+      { c: "几", p: "jǐ", m: "combien" },
+      { c: "多", p: "duō", m: "nombreux" },
+      { c: "个", p: "gè", m: "classificateur" },
+      { c: "只", p: "zhī", m: "classificateur" },
+      { c: "口", p: "kǒu", m: "classificateur famille" },
+      { c: "第", p: "dì", m: "ordinal" }
+    ]
+  },
+  {
+    id: "temps",
+    title: "Temps et calendrier",
+    words: [
+      { c: "年", p: "nián", m: "année" },
+      { c: "号", p: "hào", m: "date" },
+      { c: "期", p: "qī", m: "période" },
+      { c: "今", p: "jīn", m: "aujourd'hui" },
+      { c: "昨", p: "zuó", m: "hier" },
+      { c: "明", p: "míng", m: "demain" },
+      { c: "去", p: "qù", m: "passé" },
+      { c: "节", p: "jié", m: "fête" }
+    ]
+  },
+  {
+    id: "personnes",
+    title: "Personnes et identité",
+    words: [
+      { c: "人", p: "rén", m: "personne" },
+      { c: "子", p: "zǐ", m: "enfant" },
+      { c: "女", p: "nǚ", m: "femme, fille" },
+      { c: "王", p: "wáng", m: "roi" },
+      { c: "姓", p: "xìng", m: "nom de famille" },
+      { c: "名", p: "míng", m: "prénom" },
+      { c: "生", p: "shēng", m: "naître" },
+      { c: "家", p: "jiā", m: "famille" },
+      { c: "友", p: "yǒu", m: "ami" },
+      { c: "汉", p: "hàn", m: "Han, chinois" }
+    ]
+  },
+  {
+    id: "famille",
+    title: "Famille",
+    words: [
+      { c: "爸", p: "bà", m: "papa" },
+      { c: "爷", p: "yé", m: "grand-père" },
+      { c: "奶", p: "nǎi", m: "grand-mère paternelle" },
+      { c: "姥", p: "lǎo", m: "grand-parent maternel" },
+      { c: "外", p: "wài", m: "extérieur" },
+      { c: "哥", p: "gē", m: "frère aîné" },
+      { c: "弟", p: "dì", m: "frère cadet" },
+      { c: "姐", p: "jiě", m: "sœur aînée" },
+      { c: "妹", p: "mèi", m: "sœur cadette" },
+      { c: "兄", p: "xiōng", m: "frère aîné (ancien)" }
+    ]
+  },
+  {
+    id: "pays",
+    title: "Pays et langues",
+    words: [
+      { c: "中国", p: "zhōngguó", m: "Chine" },
+      { c: "法国", p: "fǎguó", m: "France" },
+      { c: "日本", p: "rìběn", m: "Japon" },
+      { c: "文", p: "wén", m: "langue écrite" },
+      { c: "亚", p: "yà", m: "Asie" },
+      { c: "洲", p: "zhōu", m: "continent" }
+    ]
+  },
+  {
+    id: "ecole",
+    title: "École et écriture",
+    words: [
+      { c: "学", p: "xué", m: "étudier" },
+      { c: "老师", p: "lǎoshī", m: "professeur" },
+      { c: "书", p: "shū", m: "livre" },
+      { c: "字", p: "zì", m: "caractère" },
+      { c: "写", p: "xiě", m: "écrire" },
+      { c: "看", p: "kàn", m: "lire, regarder" },
+      { c: "知道", p: "zhīdao", m: "savoir" },
+      { c: "认", p: "rèn", m: "reconnaître" },
+      { c: "识", p: "shí", m: "connaître" },
+      { c: "本子", p: "běnzi", m: "cahier" }
+    ]
+  },
+  {
+    id: "verbes-simples",
+    title: "Verbes simples",
+    words: [
+      { c: "是", p: "shì", m: "être" },
+      { c: "有", p: "yǒu", m: "avoir" },
+      { c: "去", p: "qù", m: "aller" },
+      { c: "开", p: "kāi", m: "ouvrir" },
+      { c: "走", p: "zǒu", m: "marcher" },
+      { c: "在", p: "zài", m: "être situé" },
+      { c: "住在", p: "zhùzài", m: "habiter à" },
+      { c: "做", p: "zuò", m: "faire" },
+      { c: "说", p: "shuō", m: "parler" },
+      { c: "叫", p: "jiào", m: "s'appeler" },
+      { c: "过", p: "guò", m: "passer" },
+      { c: "出生", p: "chūshēng", m: "naître" },
+      { c: "要", p: "yào", m: "vouloir" },
+      { c: "行", p: "xíng", m: "convenir" },
+      { c: "怕", p: "pà", m: "avoir peur" }
+    ]
+  },
+  {
+    id: "verbes-objets",
+    title: "Verbes-objets",
+    words: [
+      { c: "吃饭", p: "chīfàn", m: "manger" },
+      { c: "做饭", p: "zuòfàn", m: "cuisiner" },
+      { c: "看书", p: "kànshū", m: "lire" },
+      { c: "写字", p: "xiězì", m: "écrire des caractères" },
+      { c: "说话", p: "shuōhuà", m: "parler" },
+      { c: "过年", p: "guònián", m: "célébrer le Nouvel An" }
+    ]
+  },
+  {
+    id: "cognition",
+    title: "Verbes de pensée / cognition",
+    words: [
+      { c: "想", p: "xiǎng", m: "penser, vouloir" },
+      { c: "知道", p: "zhīdao", m: "savoir" },
+      { c: "认识", p: "rènshi", m: "connaître" },
+      { c: "喜欢", p: "xǐhuan", m: "aimer" }
+    ]
+  },
+  {
+    id: "verbes-adj",
+    title: "Verbes adjectifs",
+    words: [
+      { c: "好", p: "hǎo", m: "être bon" },
+      { c: "大", p: "dà", m: "être grand" },
+      { c: "小", p: "xiǎo", m: "être petit" },
+      { c: "多", p: "duō", m: "être nombreux" },
+      { c: "贵", p: "guì", m: "être cher" },
+      { c: "老", p: "lǎo", m: "être vieux" },
+      { c: "热", p: "rè", m: "être chaud" },
+      { c: "冷", p: "lěng", m: "être froid" },
+      { c: "聪明", p: "cōngming", m: "être intelligent" },
+      { c: "美丽", p: "měilì", m: "être beau" },
+      { c: "开心", p: "kāixīn", m: "être joyeux" },
+      { c: "好看", p: "hǎokàn", m: "être joli" },
+      { c: "凶", p: "xiōng", m: "être féroce" }
+    ]
+  },
+  {
+    id: "sentiments",
+    title: "Sentiments, valeurs et notions abstraites",
+    words: [
+      { c: "心", p: "xīn", m: "cœur" },
+      { c: "福", p: "fú", m: "bonheur" },
+      { c: "和", p: "hé", m: "harmonie" },
+      { c: "平", p: "píng", m: "paix" },
+      { c: "乐", p: "lè", m: "joie" },
+      { c: "思想", p: "sīxiǎng", m: "pensée" },
+      { c: "想法", p: "xiǎngfǎ", m: "idée" }
+    ]
+  },
+  {
+    id: "animaux",
+    title: "Animaux",
+    words: [
+      { c: "猴子", p: "hóuzi", m: "singe" },
+      { c: "猫", p: "māo", m: "chat" },
+      { c: "狗", p: "gǒu", m: "chien" },
+      { c: "肖", p: "xiào", m: "signe du zodiaque" }
+    ]
+  },
+  {
+    id: "couleurs",
+    title: "Couleurs",
+    words: [
+      { c: "白", p: "bái", m: "blanc" },
+      { c: "红", p: "hóng", m: "rouge" },
+      { c: "金", p: "jīn", m: "doré" }
+    ]
+  },
+  {
+    id: "quotidien",
+    title: "Vie quotidienne",
+    words: [
+      { c: "门", p: "mén", m: "porte" },
+      { c: "茶", p: "chá", m: "thé" },
+      { c: "饭", p: "fàn", m: "repas" },
+      { c: "米", p: "mǐ", m: "riz" },
+      { c: "画", p: "huà", m: "dessin" }
+    ]
+  },
+  {
+    id: "grammaire",
+    title: "Outils grammaticaux",
+    words: [
+      { c: "不", p: "bù", m: "négation" },
+      { c: "很", p: "hěn", m: "très" },
+      { c: "太", p: "tài", m: "trop" },
+      { c: "吗", p: "ma", m: "particule interrogative" },
+      { c: "也", p: "yě", m: "aussi" },
+      { c: "这", p: "zhè", m: "ce/cette" },
+      { c: "哪", p: "nǎ", m: "quel" },
+      { c: "什么", p: "shénme", m: "quoi" },
+      { c: "谁", p: "shéi", m: "qui" },
+      { c: "的", p: "de", m: "particule (possession)" },
+      { c: "都", p: "dōu", m: "tous" },
+      { c: "最", p: "zuì", m: "le plus" },
+      { c: "可是", p: "kěshi", m: "mais" },
+      { c: "和", p: "hé", m: "et" }
+    ]
+  }
+];
+// Exercices du cahier de vacances - organisés par chapitre
+// type: "qcm" | "selfcheck" (auto-correction: l'élève tape, compare, puis dit juste/faux)
+const CAHIER_CHAPTERS = [
+  {
+    id: "ch1",
+    title: "Bienvenue à Pékin",
+    subtitle: "欢迎来北京！",
+    exercises: [
+      {
+        id: "ch1-ex1",
+        title: "Complète (Exercice 1)",
+        type: "selfcheck",
+        items: [
+          { prompt: "我是________人。", solution: "我是法国人。(exemple : adapte avec ta nationalité)" },
+          { prompt: "我住在________。", solution: "我住在巴黎。(exemple : adapte avec ta ville)" },
+          { prompt: "我喜欢________。", solution: "我喜欢看书。(exemple : adapte avec tes goûts)" },
+          { prompt: "我家有________口人。", solution: "我家有四口人。(exemple : adapte avec ta famille)" }
+        ]
+      },
+      {
+        id: "ch1-ex2",
+        title: "Transforme avec 吗 (Exercice 2)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你是老师。", solution: "你是老师吗？" },
+          { prompt: "你喜欢猫。", solution: "你喜欢猫吗？" },
+          { prompt: "你家有狗。", solution: "你家有狗吗？" },
+          { prompt: "你住在法国。", solution: "你住在法国吗？" },
+          { prompt: "你喜欢看书。", solution: "你喜欢看书吗？" }
+        ]
+      },
+      {
+        id: "ch1-ex4",
+        title: "Transforme en question V不V (Exercice 4)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你喜欢中国。", solution: "你喜不喜欢中国？" },
+          { prompt: "你有猫。", solution: "你有没有猫？" },
+          { prompt: "你认识老师。", solution: "你认不认识老师？" },
+          { prompt: "你看书。", solution: "你看不看书？" },
+          { prompt: "你去北京。", solution: "你去不去北京？" }
+        ]
+      },
+      {
+        id: "ch1-ex6",
+        title: "Complète avec un mot interrogatif (Exercice 6)",
+        type: "selfcheck",
+        items: [
+          { prompt: "______ 是你的老师？", solution: "谁是你的老师？ (谁 = qui)" },
+          { prompt: "你喜欢 ______？", solution: "你喜欢什么？ (什么 = quoi)" },
+          { prompt: "你是哪______人？", solution: "你是哪国人？ (哪 = quel)" },
+          { prompt: "你家有______口人？", solution: "你家有几口人？ (几 = combien)" },
+          { prompt: "______ 是王小龙？", solution: "谁是王小龙？ (谁 = qui)" }
+        ]
+      },
+      {
+        id: "ch1-quiz",
+        title: "Mini-quiz : Pékin",
+        type: "qcm",
+        items: [
+          { prompt: "Que signifie 北京 ?", options: ["capitale du sud", "capitale du nord", "ville rouge"], answer: 1, explanation: "北 (běi) signifie « nord » et 京 (jīng) signifie « capitale ». 北京 veut donc dire « capitale du Nord »." }
+        ]
+      },
+      {
+        id: "ch1-comprehension",
+        title: "Je repère (Lecture 1 - Qui est Wang Xiaolong ?)",
+        type: "qcm",
+        items: [
+          { prompt: "王小龙是哪国人？", options: ["法国人", "中国人", "日本人"], answer: 1, explanation: "Le texte dit « 我是中国人 » : il est chinois." },
+          { prompt: "他几岁了？", options: ["十岁", "十二岁", "十三岁"], answer: 1, explanation: "Le texte dit « 我十二岁 » : il a douze ans." },
+          { prompt: "他家有几口人？", options: ["三口人", "四口人", "五口人"], answer: 1, explanation: "Le texte dit « 我家有四口人 » : sa famille compte quatre personnes." },
+          { prompt: "他家有什么动物？", options: ["一只猫", "一只狗", "一只鸟"], answer: 0, explanation: "Le texte dit « 我家有一只猫 » : sa famille a un chat." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch2",
+    title: "Chez la famille Wang",
+    subtitle: "在王小龙家",
+    exercises: [
+      {
+        id: "ch2-ex1",
+        title: "Complète avec 的 et traduis (Exercice 1)",
+        type: "selfcheck",
+        items: [
+          { prompt: "我___书", solution: "我的书 (mon livre)" },
+          { prompt: "你___朋友", solution: "你的朋友 (ton ami)" },
+          { prompt: "姐姐___猫", solution: "姐姐的猫 (le chat de la grande sœur)" },
+          { prompt: "老师___本子", solution: "老师的本子 (le cahier du professeur)" },
+          { prompt: "爸爸___茶", solution: "爸爸的茶 (le thé de papa)" },
+          { prompt: "妈妈___书", solution: "妈妈的书 (le livre de maman)" },
+          { prompt: "爷爷___朋友", solution: "爷爷的朋友 (l'ami du grand-père)" },
+          { prompt: "奶奶___家", solution: "奶奶的家 (la maison de grand-mère)" }
+        ]
+      },
+      {
+        id: "ch2-ex2",
+        title: "Traduis en chinois (Exercice 2)",
+        type: "selfcheck",
+        items: [
+          { prompt: "Mon livre", solution: "我的书" },
+          { prompt: "Le chat de ma sœur", solution: "姐姐的猫 / 妹妹的猫" },
+          { prompt: "Le professeur de Wang Xiaolong", solution: "王小龙的老师" },
+          { prompt: "Le cahier de mon frère", solution: "哥哥的本子 / 弟弟的本子" },
+          { prompt: "Les amis de ma mère", solution: "妈妈的朋友" }
+        ]
+      },
+      {
+        id: "ch2-comprehension",
+        title: "Je repère (La famille de Wang Xiaolong)",
+        type: "qcm",
+        items: [
+          { prompt: "王小龙住在哪儿？", options: ["上海", "北京", "广州"], answer: 1, explanation: "Le texte dit « 王小龙住在北京 »." },
+          { prompt: "他家有几口人？", options: ["四口人", "六口人", "五口人"], answer: 1, explanation: "Le texte dit « 他家有六口人 »." },
+          { prompt: "谁喜欢喝茶？", options: ["妈妈", "爸爸", "妹妹"], answer: 1, explanation: "Le texte dit « 爸爸喜欢喝茶 »." },
+          { prompt: "谁喜欢做饭？", options: ["奶奶", "爷爷", "妈妈"], answer: 0, explanation: "Le texte dit « 奶奶喜欢做饭 »." }
+        ]
+      },
+      {
+        id: "ch2-quiz",
+        title: "Mini-quiz : Confucius",
+        type: "qcm",
+        items: [
+          { prompt: "Qui est Confucius ?", options: ["un empereur", "un philosophe", "un explorateur"], answer: 1, explanation: "Confucius est un philosophe chinois qui a vécu il y a plus de 2500 ans." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch3",
+    title: "Une journée à l'école",
+    subtitle: "在学校",
+    exercises: [
+      {
+        id: "ch3-ex1",
+        title: "是 ou 有 ? (Exercice 1)",
+        type: "selfcheck",
+        items: [
+          { prompt: "王老师______老师。", solution: "王老师是老师。" },
+          { prompt: "学校里______很多学生。", solution: "学校里有很多学生。" },
+          { prompt: "我______法国人。", solution: "我是法国人。" },
+          { prompt: "图书馆里______很多书。", solution: "图书馆里有很多书。" },
+          { prompt: "王小龙______一个朋友。", solution: "王小龙有一个朋友。" },
+          { prompt: "北京______中国的首都。", solution: "北京是中国的首都。" },
+          { prompt: "我家______四口人。", solution: "我家有四口人。" },
+          { prompt: "学校里______一个图书馆。", solution: "学校里有一个图书馆。" },
+          { prompt: "她______中国人。", solution: "她是中国人。" },
+          { prompt: "我______一只猫。", solution: "我有一只猫。" }
+        ]
+      },
+      {
+        id: "ch3-ex3",
+        title: "Transforme en question avec 吗 (Exercice 3)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你是法国人。", solution: "你是法国人吗？" },
+          { prompt: "你喜欢中文。", solution: "你喜欢中文吗？" },
+          { prompt: "你家有狗。", solution: "你家有狗吗？" },
+          { prompt: "你有妹妹。", solution: "你有妹妹吗？" },
+          { prompt: "王老师是老师。", solution: "王老师是老师吗？" },
+          { prompt: "你喜欢茶。", solution: "你喜欢茶吗？" },
+          { prompt: "他住在北京。", solution: "他住在北京吗？" },
+          { prompt: "你喜欢看书。", solution: "你喜欢看书吗？" },
+          { prompt: "你认识王小龙。", solution: "你认识王小龙吗？" }
+        ]
+      },
+      {
+        id: "ch3-ex5",
+        title: "Transforme V不V (Exercice 5)",
+        type: "selfcheck",
+        items: [
+          { prompt: "老师天天去中学。", solution: "老师天天去不去中学？" },
+          { prompt: "小猫看美丽的花。", solution: "小猫看不看美丽的花？" },
+          { prompt: "法国学生学中文。", solution: "法国学生学不学中文？" },
+          { prompt: "我不认识这个人。", solution: "我认不认识这个人？" },
+          { prompt: "我哥哥有一个女朋友。", solution: "我哥哥有没有一个女朋友？" },
+          { prompt: "他们都是我的朋友。", solution: "他们是不是我的朋友？" },
+          { prompt: "他们说日文。", solution: "他们说不说日文？" },
+          { prompt: "中国皇帝住在北京。", solution: "中国皇帝住不住在北京？" },
+          { prompt: "我妹妹要吃饭。", solution: "我妹妹要不要吃饭？" }
+        ]
+      },
+      {
+        id: "ch3-ex8",
+        title: "谁？什么？哪？ (Exercice 8)",
+        type: "selfcheck",
+        items: [
+          { prompt: "______是你的老师？", solution: "谁是你的老师？" },
+          { prompt: "你喜欢______？", solution: "你喜欢什么？" },
+          { prompt: "你是______国人？", solution: "你是哪国人？" },
+          { prompt: "______是你的朋友？", solution: "谁是你的朋友？" },
+          { prompt: "你看______书？", solution: "你看什么书？" },
+          { prompt: "______喜欢猫？", solution: "谁喜欢猫？" },
+          { prompt: "你家有______？", solution: "你家有什么？ (réponse libre)" },
+          { prompt: "______是王小龙？", solution: "谁是王小龙？" },
+          { prompt: "你去______？", solution: "你去哪儿？" },
+          { prompt: "______是你的学校？", solution: "哪个是你的学校？" }
+        ]
+      },
+      {
+        id: "ch3-ex10",
+        title: "Remets les mots dans l'ordre (Exercice 10)",
+        type: "selfcheck",
+        items: [
+          { prompt: "中国人 / 我 / 是", solution: "我是中国人。" },
+          { prompt: "喜欢 / 我 / 中文", solution: "我喜欢中文。" },
+          { prompt: "朋友 / 我的 / 很 / 聪明", solution: "我的朋友很聪明。" },
+          { prompt: "学校 / 去 / 我 / 八点", solution: "我八点去学校。" },
+          { prompt: "看书 / 喜欢 / 他", solution: "他喜欢看书。" },
+          { prompt: "图书馆 / 有 / 学校 / 一个", solution: "学校有一个图书馆。" },
+          { prompt: "猫 / 有 / 我家 / 一只", solution: "我家有一只猫。" },
+          { prompt: "法国人 / 你 / 是", solution: "你是法国人。" },
+          { prompt: "老师 / 王老师 / 是", solution: "王老师是老师。" },
+          { prompt: "北京 / 他 / 住在", solution: "他住在北京。" }
+        ]
+      },
+      {
+        id: "ch3-comprehension",
+        title: "Je repère (La journée de Wang Xiaolong)",
+        type: "qcm",
+        items: [
+          { prompt: "今天星期几？", options: ["星期一", "星期二", "星期六"], answer: 0, explanation: "Le texte dit « 今天是星期一 »." },
+          { prompt: "王小龙几点起床？", options: ["六点", "七点", "八点"], answer: 1, explanation: "Le texte dit « 王小龙七点起床 »." },
+          { prompt: "第一节课是什么课？", options: ["中文课", "法语课", "数学课"], answer: 0, explanation: "Le texte dit « 第一节课是中文课 »." },
+          { prompt: "晚上他做什么？", options: ["看书", "做作业", "喝茶"], answer: 1, explanation: "Le texte dit « 王小龙回家做作业 »." }
+        ]
+      },
+      {
+        id: "ch3-quiz",
+        title: "Quiz Culture : l'école en Chine",
+        type: "qcm",
+        items: [
+          { prompt: "Les classes chinoises sont souvent :", options: ["petites", "moyennes", "nombreuses"], answer: 2, explanation: "Les classes peuvent compter plus de 40 élèves." },
+          { prompt: "Quel art traditionnel est souvent enseigné ?", options: ["sculpture", "calligraphie", "théâtre"], answer: 1, explanation: "La calligraphie est considérée comme un art important en Chine." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch4",
+    title: "Au marché de Pékin",
+    subtitle: "北京市场",
+    exercises: [
+      {
+        id: "ch4-ex1",
+        title: "Écris en chiffres (Exercice 1)",
+        type: "selfcheck",
+        items: [
+          { prompt: "一百二十三", solution: "123" },
+          { prompt: "二百零二", solution: "202" },
+          { prompt: "三千零五", solution: "3005" },
+          { prompt: "两万零八", solution: "20008" },
+          { prompt: "五百二十三万零四百九十九", solution: "5230499" }
+        ]
+      },
+      {
+        id: "ch4-ex2",
+        title: "Écris en caractères (Exercice 2)",
+        type: "selfcheck",
+        items: [
+          { prompt: "107", solution: "一百零七" },
+          { prompt: "2222", solution: "两千二百二十二" },
+          { prompt: "48765", solution: "四万八千七百六十五" },
+          { prompt: "2465784", solution: "二百四十六万五千七百八十四" },
+          { prompt: "75800017", solution: "七千五百八十万零十七" }
+        ]
+      },
+      {
+        id: "ch4-ex4",
+        title: "Choisis le bon classificateur (个/只/口) (Exercice 4)",
+        type: "selfcheck",
+        items: [
+          { prompt: "一______猫", solution: "一只猫" },
+          { prompt: "三______朋友", solution: "三个朋友" },
+          { prompt: "五______人", solution: "五口人 (famille) / 五个人 (général)" },
+          { prompt: "两______狗", solution: "两只狗" },
+          { prompt: "四______学生", solution: "四个学生" },
+          { prompt: "六______老师", solution: "六个老师" },
+          { prompt: "一______鸟", solution: "一只鸟" },
+          { prompt: "七______书", solution: "七本书 (本 pour les livres, exception)" },
+          { prompt: "四______人家", solution: "四口人家" },
+          { prompt: "三______猫", solution: "三只猫" }
+        ]
+      },
+      {
+        id: "ch4-comprehension",
+        title: "Je repère (Première visite au marché)",
+        type: "qcm",
+        items: [
+          { prompt: "今天星期几？", options: ["星期五", "星期六", "星期天"], answer: 1, explanation: "Le texte dit « 今天是星期六 »." },
+          { prompt: "谁喜欢喝茶？", options: ["作者", "王小龙", "老板"], answer: 1, explanation: "Le texte dit « 王小龙喜欢喝茶 »." },
+          { prompt: "作者买什么？", options: ["茶", "苹果", "米饭"], answer: 1, explanation: "Le texte dit « 我喜欢水果，所以我买苹果 »." }
+        ]
+      },
+      {
+        id: "ch4-quiz",
+        title: "Mini Quiz : les marchés",
+        type: "qcm",
+        items: [
+          { prompt: "Que peut-on acheter dans un marché chinois ?", options: ["des fruits", "du thé", "des légumes", "tout cela"], answer: 3, explanation: "On y trouve des fruits, légumes, thé, épices et spécialités locales." },
+          { prompt: "Les marchés sont souvent :", options: ["silencieux", "animés", "fermés"], answer: 1, explanation: "Les marchés sont souvent très animés, avec des vendeurs qui appellent les clients." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch5",
+    title: "Le thé chinois",
+    subtitle: "中国茶",
+    exercises: [
+      {
+        id: "ch5-ex3",
+        title: "Complète avec les verbes-objets (Exercice 3)",
+        type: "selfcheck",
+        items: [
+          { prompt: "有的人________茶。", solution: "有的人喝茶。" },
+          { prompt: "有的人________书。", solution: "有的人看书。" },
+          { prompt: "有的人________话。", solution: "有的人说话。" }
+        ]
+      },
+      {
+        id: "ch5-ex6",
+        title: "Questions avec 吗 (Exercice 6)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你喜欢喝茶。", solution: "你喜欢喝茶吗？" },
+          { prompt: "茶很好喝。", solution: "茶好喝吗？" },
+          { prompt: "你有朋友。", solution: "你有朋友吗？" },
+          { prompt: "你喜欢看书。", solution: "你喜欢看书吗？" },
+          { prompt: "茶馆很安静。", solution: "茶馆安静吗？" }
+        ]
+      },
+      {
+        id: "ch5-comprehension",
+        title: "Je repère (Le grand-père de Wang aime le thé)",
+        type: "qcm",
+        items: [
+          { prompt: "谁喜欢喝茶？", options: ["爸爸", "爷爷", "哥哥"], answer: 1, explanation: "Le texte dit « 王小龙的爷爷很喜欢喝茶 »." },
+          { prompt: "爷爷早上做什么？", options: ["睡觉", "喝茶也看书", "做饭"], answer: 1, explanation: "Le texte dit « 他喝茶，也看书 »." }
+        ]
+      },
+      {
+        id: "ch5-quiz",
+        title: "Mini Quiz Culture : l'eau chaude",
+        type: "qcm",
+        items: [
+          { prompt: "Dans un restaurant chinois traditionnel, on sert souvent :", options: ["du lait", "de l'eau chaude", "du café"], answer: 1, explanation: "On sert spontanément de l'eau chaude ou tiède dans de nombreux restaurants chinois." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch6",
+    title: "Les pandas du Sichuan",
+    subtitle: "四川熊猫",
+    exercises: [
+      {
+        id: "ch6-ex1",
+        title: "Décrire un animal (Exercice 1)",
+        type: "selfcheck",
+        items: [
+          { prompt: "熊猫很________。", solution: "熊猫很大。/ 熊猫很可爱。 (exemple)" },
+          { prompt: "熊猫喜欢________。", solution: "熊猫喜欢吃竹子。" },
+          { prompt: "熊猫住在________。", solution: "熊猫住在四川。" }
+        ]
+      },
+      {
+        id: "ch6-comprehension",
+        title: "Je repère (Quel animal est le panda ?)",
+        type: "qcm",
+        items: [
+          { prompt: "熊猫住在哪儿？", options: ["北京", "四川", "上海"], answer: 1, explanation: "Le texte dit « 它住在四川 »." },
+          { prompt: "熊猫喜欢吃什么？", options: ["米饭", "竹子", "鱼"], answer: 1, explanation: "Le texte dit « 它喜欢吃竹子 »." },
+          { prompt: "熊猫的身体是什么颜色？", options: ["黑色和白色", "红色和白色", "全黑色"], answer: 0, explanation: "Le texte dit « 它的身体是黑色和白色的 »." }
+        ]
+      },
+      {
+        id: "ch6-quiz",
+        title: "Quiz Culture : le panda",
+        type: "qcm",
+        items: [
+          { prompt: "Le panda vit principalement :", options: ["au Japon", "en Chine", "en Corée"], answer: 1, explanation: "Le panda géant vit dans la province du Sichuan, en Chine." },
+          { prompt: "Le panda mange surtout :", options: ["du poisson", "du bambou", "du riz"], answer: 1, explanation: "Le panda mange principalement du bambou (竹子)." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch7",
+    title: "Le Nouvel An chinois",
+    subtitle: "过年",
+    exercises: [
+      {
+        id: "ch7-ex2",
+        title: "Complète avec 有 et traduis (Exercice 2)",
+        type: "selfcheck",
+        items: [
+          { prompt: "年夜饭______很多菜。", solution: "年夜饭有很多菜。 (Le repas du réveillon a beaucoup de plats.)" },
+          { prompt: "我家______四口人。", solution: "我家有四口人。 (Ma famille compte quatre personnes.)" },
+          { prompt: "北京______很多人。", solution: "北京有很多人。 (Il y a beaucoup de gens à Pékin.)" },
+          { prompt: "学校里______图书馆。", solution: "学校里有图书馆。 (Il y a une bibliothèque à l'école.)" },
+          { prompt: "王小龙______一个妹妹。", solution: "王小龙有一个妹妹。 (Wang Xiaolong a une petite sœur.)" }
+        ]
+      },
+      {
+        id: "ch7-ex4",
+        title: "Questions avec 吗 (Exercice 4)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你喜欢春节。", solution: "你喜欢春节吗？" },
+          { prompt: "红包是红色的。", solution: "红包是红色的吗？" },
+          { prompt: "你家有很多人。", solution: "你家有很多人吗？" },
+          { prompt: "王小龙很开心。", solution: "王小龙开心吗？" },
+          { prompt: "你喜欢红包。", solution: "你喜欢红包吗？" }
+        ]
+      },
+      {
+        id: "ch7-comprehension",
+        title: "Je repère (Les préparatifs)",
+        type: "qcm",
+        items: [
+          { prompt: "明天是什么节日？", options: ["中秋节", "春节", "国庆节"], answer: 1, explanation: "Le texte dit « 明天是春节了 »." },
+          { prompt: "谁打扫房子？", options: ["爷爷奶奶", "爸爸妈妈", "王小龙"], answer: 1, explanation: "Le texte dit « 爸爸和妈妈打扫房子 »." },
+          { prompt: "谁包饺子？", options: ["爸爸妈妈", "爷爷奶奶", "妹妹"], answer: 1, explanation: "Le texte dit « 爷爷和奶奶包饺子 »." }
+        ]
+      },
+      {
+        id: "ch7-quiz",
+        title: "Quiz Culture : le rouge et le poisson",
+        type: "qcm",
+        items: [
+          { prompt: "Quelle couleur est associée au bonheur ?", options: ["bleu", "vert", "rouge"], answer: 2, explanation: "En Chine, le rouge est associé au bonheur, à la réussite et à la prospérité." },
+          { prompt: "Qui reçoit souvent les enveloppes rouges ?", options: ["les enfants", "les professeurs", "les pandas"], answer: 0, explanation: "Les enveloppes rouges (红包) contenant de l'argent sont traditionnellement données aux enfants." }
+        ]
+      }
+    ]
+  },
+  {
+    id: "ch8",
+    title: "J'écris à Wang Xiaolong",
+    subtitle: "给王小龙写信",
+    exercises: [
+      {
+        id: "ch8-ex4",
+        title: "Complète avec 的 et traduis en chinois (Exercice 4)",
+        type: "selfcheck",
+        items: [
+          { prompt: "我___老师", solution: "我的老师" },
+          { prompt: "王小龙___家", solution: "王小龙的家" },
+          { prompt: "妈妈___朋友", solution: "妈妈的朋友" },
+          { prompt: "妹妹___猫", solution: "妹妹的猫" },
+          { prompt: "学校___图书馆", solution: "学校的图书馆" },
+          { prompt: "中国___茶", solution: "中国的茶" },
+          { prompt: "爷爷___书", solution: "爷爷的书" }
+        ]
+      },
+      {
+        id: "ch8-ex5",
+        title: "Questions avec 吗 (Exercice 5)",
+        type: "selfcheck",
+        items: [
+          { prompt: "你喜欢中国。", solution: "你喜欢中国吗？" },
+          { prompt: "你家有四口人。", solution: "你家有四口人吗？" },
+          { prompt: "你喜欢喝茶。", solution: "你喜欢喝茶吗？" },
+          { prompt: "你的学校很大。", solution: "你的学校大吗？" },
+          { prompt: "你认识王小龙。", solution: "你认识王小龙吗？" }
+        ]
+      },
+      {
+        id: "ch8-comprehension",
+        title: "Je repère (La lettre de Wang Xiaolong)",
+        type: "qcm",
+        items: [
+          { prompt: "谁写信？", options: ["王小龙", "作者", "老师"], answer: 0, explanation: "Le texte dit « 王小龙的信 », c'est lui qui écrit." },
+          { prompt: "王小龙高兴吗？", options: ["不高兴", "很高兴", "不知道"], answer: 1, explanation: "Le texte dit « 我很高兴认识你 »." }
+        ]
+      },
+      {
+        id: "ch8-quiz",
+        title: "Grand jeu de révision : Qui suis-je ?",
+        type: "qcm",
+        items: [
+          { prompt: "Je suis la capitale de la Chine.", options: ["上海", "北京", "广州"], answer: 1, explanation: "北京 (Běijīng) est la capitale de la Chine." },
+          { prompt: "Je suis un animal noir et blanc.", options: ["猫", "熊猫", "狗"], answer: 1, explanation: "熊猫 (xióngmāo) est le panda, noir et blanc." },
+          { prompt: "Je suis la fête la plus importante de Chine.", options: ["中秋节", "春节", "国庆节"], answer: 1, explanation: "春节 (Chūnjié), le Nouvel An chinois, est la fête familiale la plus importante." },
+          { prompt: "Je suis le mot utilisé pour exprimer la possession.", options: ["了", "的", "吗"], answer: 1, explanation: "的 (de) est la particule de possession en chinois." }
+        ]
+      }
+    ]
+  }
+];
+
+// ===================== STORAGE HELPERS =====================
+// Simple obfuscation for passwords (NOT real security - just avoids plaintext storage)
+function hashPass(pass){
+  let h = 0;
+  for(let i=0;i<pass.length;i++){ h = (h*31 + pass.charCodeAt(i)) >>> 0; }
+  return 'h' + h.toString(36) + pass.length;
+}
+
+async function storageGet(key, shared){
+  try{
+    const res = await window.storage.get(key, !!shared);
+    return res ? JSON.parse(res.value) : null;
+  }catch(e){ return null; }
+}
+async function storageSet(key, value, shared){
+  try{
+    await window.storage.set(key, JSON.stringify(value), !!shared);
+    return true;
+  }catch(e){ console.error('storage set failed', e); return false; }
+}
+async function storageListKeys(prefix, shared){
+  try{
+    const res = await window.storage.list(prefix, !!shared);
+    return res ? res.keys : [];
+  }catch(e){ return []; }
+}
+
+// ===================== APP STATE =====================
+const state = {
+  user: null,           // { name, points, exosDone, wordsSeen, charScores: {catId:{...}} }
+  currentVocabCat: null,
+  currentMode: null,     // qcm | input | flash
+  currentChapter: null,
+  currentExercise: null,
+  runner: {
+    items: [],
+    index: 0,
+    correctCount: 0,
+    pointsEarned: 0,
+    mode: null,          // qcm | input | flash | selfcheck
+    sourceLabel: ''
+  }
+};
+
+// ===================== NAVIGATION =====================
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-back]').forEach(btn=>{
+  btn.addEventListener('click', ()=> showScreen(btn.getAttribute('data-back')));
+});
+
+// ===================== AUTH =====================
+const loginError = document.getElementById('login-error');
+const signupError = document.getElementById('signup-error');
+
+document.getElementById('go-signup').addEventListener('click', ()=>{
+  document.getElementById('login-mode-signin').style.display='none';
+  document.getElementById('login-mode-signup').style.display='block';
+});
+document.getElementById('go-signin').addEventListener('click', ()=>{
+  document.getElementById('login-mode-signup').style.display='none';
+  document.getElementById('login-mode-signin').style.display='block';
+});
+
+document.getElementById('btn-signup').addEventListener('click', async ()=>{
+  const name = document.getElementById('su-name').value.trim();
+  const pass = document.getElementById('su-pass').value;
+  const pass2 = document.getElementById('su-pass2').value;
+  signupError.textContent = '';
+
+  if(!name){ signupError.textContent = 'Choisis un prénom.'; return; }
+  if(!pass || pass.length < 4){ signupError.textContent = 'Le mot de passe doit avoir au moins 4 caractères.'; return; }
+  if(pass !== pass2){ signupError.textContent = 'Les mots de passe ne correspondent pas.'; return; }
+
+  const key = 'user:' + name.toLowerCase();
+  const existing = await storageGet(key, true);
+  if(existing){ signupError.textContent = 'Ce prénom est déjà utilisé. Choisis-en un autre ou connecte-toi.'; return; }
+
+  const newUser = {
+    name: name,
+    passHash: hashPass(pass),
+    points: 0,
+    exosDone: 0,
+    wordsSeen: 0,
+    charScores: {},
+    createdAt: Date.now()
+  };
+  const ok = await storageSet(key, newUser, true);
+  if(!ok){ signupError.textContent = "Erreur de connexion au serveur, réessaie."; return; }
+  state.user = newUser;
+  enterApp();
+});
+
+document.getElementById('btn-signin').addEventListener('click', async ()=>{
+  const name = document.getElementById('li-name').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  loginError.textContent = '';
+  if(!name || !pass){ loginError.textContent = 'Entre ton prénom et ton mot de passe.'; return; }
+
+  const key = 'user:' + name.toLowerCase();
+  const existing = await storageGet(key, true);
+  if(!existing){ loginError.textContent = "Aucun compte avec ce prénom. Crée-en un d'abord."; return; }
+  if(existing.passHash !== hashPass(pass)){ loginError.textContent = 'Mot de passe incorrect.'; return; }
+
+  state.user = existing;
+  enterApp();
+});
+
+document.getElementById('btn-logout').addEventListener('click', ()=>{
+  state.user = null;
+  document.getElementById('li-name').value='';
+  document.getElementById('li-pass').value='';
+  document.getElementById('login-mode-signup').style.display='none';
+  document.getElementById('login-mode-signin').style.display='block';
+  showScreen('screen-login');
+});
+
+async function persistUser(){
+  if(!state.user) return;
+  const key = 'user:' + state.user.name.toLowerCase();
+  await storageSet(key, state.user, true);
+}
+
+function enterApp(){
+  refreshHomeStats();
+  showScreen('screen-home');
+}
+
+// ===================== HOME =====================
+function refreshHomeStats(){
+  document.getElementById('home-username').textContent = state.user.name;
+  document.getElementById('stat-points').textContent = state.user.points;
+  document.getElementById('stat-streak').textContent = state.user.wordsSeen;
+  document.getElementById('stat-exos').textContent = state.user.exosDone;
+  document.getElementById('vocab-score-pill').textContent = state.user.points;
+  document.getElementById('cahier-score-pill').textContent = state.user.points;
+}
+
+document.getElementById('card-vocab').addEventListener('click', ()=>{
+  renderVocabList();
+  showScreen('screen-vocab-list');
+});
+document.getElementById('card-cahier').addEventListener('click', ()=>{
+  renderCahierList();
+  showScreen('screen-cahier-list');
+});
+document.getElementById('card-leaderboard').addEventListener('click', async ()=>{
+  await renderLeaderboard();
+  showScreen('screen-leaderboard');
+});
+
+// ===================== VOCAB LIST =====================
+function catProgress(catId){
+  const sc = state.user.charScores[catId];
+  if(!sc) return {done:0, total: VOCAB_CATEGORIES.find(c=>c.id===catId).words.length};
+  return {done: sc.bestSeen || 0, total: VOCAB_CATEGORIES.find(c=>c.id===catId).words.length};
+}
+
+function renderVocabList(){
+  const wrap = document.getElementById('vocab-list-wrap');
+  wrap.innerHTML = '';
+  VOCAB_CATEGORIES.forEach((cat, i)=>{
+    const prog = catProgress(cat.id);
+    const done = prog.done >= prog.total;
+    const btn = document.createElement('button');
+    btn.className = 'list-item' + (done ? ' done' : '');
+    btn.innerHTML = `
+      <div class="badge">${i+1}</div>
+      <div class="info">
+        <h4>${cat.title}</h4>
+        <div class="sub">${cat.words.length} caractères</div>
+      </div>
+      <div class="progress-mini">${done ? '✓ Maîtrisé' : ''}</div>
+    `;
+    btn.addEventListener('click', ()=>{
+      state.currentVocabCat = cat;
+      document.getElementById('vocab-mode-title').textContent = cat.title;
+      showScreen('screen-vocab-mode');
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+document.querySelectorAll('#screen-vocab-mode .list-item').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const mode = btn.getAttribute('data-mode');
+    startVocabExercise(state.currentVocabCat, mode);
+  });
+});
+
+// ===================== CAHIER LIST =====================
+function chapterProgress(chapId){
+  const sc = state.user.charScores['cahier:'+chapId];
+  const chap = CAHIER_CHAPTERS.find(c=>c.id===chapId);
+  const totalExos = chap.exercises.length;
+  const done = sc ? (sc.exosDone || 0) : 0;
+  return {done, total: totalExos};
+}
+
+function renderCahierList(){
+  const wrap = document.getElementById('cahier-list-wrap');
+  wrap.innerHTML = '';
+  CAHIER_CHAPTERS.forEach((chap, i)=>{
+    const prog = chapterProgress(chap.id);
+    const complete = prog.done >= prog.total;
+    const btn = document.createElement('button');
+    btn.className = 'list-item' + (complete ? ' done' : '');
+    btn.innerHTML = `
+      <div class="badge">${i+1}</div>
+      <div class="info">
+        <h4>${chap.title}</h4>
+        <div class="sub">${chap.subtitle} · ${chap.exercises.length} exercices</div>
+      </div>
+      <div class="progress-mini">${prog.done}/${prog.total}</div>
+    `;
+    btn.addEventListener('click', ()=>{
+      state.currentChapter = chap;
+      renderChapterExercises(chap);
+      showScreen('screen-chapter');
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function renderChapterExercises(chap){
+  document.getElementById('chapter-banner-cn').textContent = chap.subtitle;
+  document.getElementById('chapter-banner-fr').textContent = chap.title;
+  const wrap = document.getElementById('chapter-exo-wrap');
+  wrap.innerHTML = '';
+  const chapKey = 'cahier:'+chap.id;
+  const sc = state.user.charScores[chapKey] || {};
+  const exoDoneSet = sc.exoIds || [];
+
+  chap.exercises.forEach((exo, i)=>{
+    const isDone = exoDoneSet.includes(exo.id);
+    const btn = document.createElement('button');
+    btn.className = 'list-item' + (isDone ? ' done' : '');
+    const typeLabel = exo.type === 'qcm' ? 'QCM' : 'Auto-correction';
+    btn.innerHTML = `
+      <div class="badge">${i+1}</div>
+      <div class="info">
+        <h4>${exo.title}</h4>
+        <div class="sub">${exo.items.length} questions <span class="chip">${typeLabel}</span></div>
+      </div>
+      <div class="progress-mini">${isDone ? '✓' : ''}</div>
+    `;
+    btn.addEventListener('click', ()=> startCahierExercise(chap, exo));
+    wrap.appendChild(btn);
+  });
+}
+
+// ===================== STAMP ANIMATION =====================
+function popStamp(symbol){
+  const el = document.getElementById('stamp-pop');
+  el.textContent = symbol;
+  el.classList.add('show');
+  setTimeout(()=> el.classList.remove('show'), 650);
+}
+
+// ===================== VOCAB EXERCISE RUNNER =====================
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startVocabExercise(cat, mode){
+  state.runner = {
+    items: shuffle(cat.words),
+    index: 0,
+    correctCount: 0,
+    pointsEarned: 0,
+    mode: mode,
+    sourceLabel: cat.title,
+    catId: cat.id
+  };
+  document.getElementById('runner-title').textContent = cat.title;
+  document.getElementById('runner-exit').onclick = ()=> exitRunner('screen-vocab-mode');
+  renderRunnerStep();
+  showScreen('screen-runner');
+}
+
+function exitRunner(target){
+  showScreen(target);
+}
+
+function renderRunnerCounter(){
+  const {index, items} = state.runner;
+  document.getElementById('runner-counter').textContent = `Question ${Math.min(index+1, items.length)} / ${items.length}`;
+  document.getElementById('runner-progress').style.width = (index/items.length*100) + '%';
+}
+
+function renderRunnerStep(){
+  const r = state.runner;
+  // Cahier exercises (qcm/selfcheck tied to a chapter) route to the dedicated renderer
+  if(r.chapId){ renderRunnerStep2(); return; }
+
+  if(r.index >= r.items.length){
+    finishRunner();
+    return;
+  }
+  renderRunnerCounter();
+  const body = document.getElementById('runner-body');
+  const footer = document.getElementById('runner-footer');
+  footer.innerHTML = '';
+  const word = r.items[r.index];
+
+  if(r.mode === 'qcm'){
+    renderVocabQCM(word, body, footer);
+  } else if(r.mode === 'input'){
+    renderVocabInput(word, body, footer);
+  } else if(r.mode === 'flash'){
+    renderVocabFlash(word, body, footer);
+  }
+}
+
+function renderVocabQCM(word, body, footer){
+  const cat = state.currentVocabCat;
+  const distractors = shuffle(cat.words.filter(w=>w.c!==word.c)).slice(0,3).map(w=>w.m);
+  const options = shuffle([word.m, ...distractors]);
+
+  body.innerHTML = `
+    <div class="prompt-card"><div class="big-hanzi hanzi">${word.c}</div></div>
+    <div class="options-grid" id="opt-grid"></div>
+  `;
+  const grid = document.getElementById('opt-grid');
+  options.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.addEventListener('click', ()=>{
+      const correct = opt === word.m;
+      document.querySelectorAll('#opt-grid .opt-btn').forEach(o=>{
+        o.disabled = true;
+        if(o.textContent === word.m) o.classList.add('correct');
+        else if(o === b && !correct) o.classList.add('wrong');
+      });
+      handleAnswer(correct, `${word.c} (${word.p}) signifie « ${word.m} ».`);
+    });
+    grid.appendChild(b);
+  });
+}
+
+function renderVocabInput(word, body, footer){
+  body.innerHTML = `
+    <div class="prompt-card">
+      <div>
+        <div class="big-hanzi hanzi" style="margin-bottom:8px;">${word.c}</div>
+        <div style="font-size:0.85rem;color:var(--ink-soft);">Écris le pinyin</div>
+      </div>
+    </div>
+    <div class="input-area">
+      <input type="text" id="vocab-input" placeholder="ex : nǐ hǎo" autocomplete="off" autocapitalize="off" autocorrect="off">
+      <button class="btn btn-primary" id="vocab-input-submit">Valider</button>
+    </div>
+    <div id="vocab-input-feedback"></div>
+  `;
+  const input = document.getElementById('vocab-input');
+  input.focus();
+  const submit = ()=>{
+    const val = normalizeAnswer(input.value);
+    const target = normalizeAnswer(word.p);
+    const correct = val.length>0 && val === target;
+    document.getElementById('vocab-input-submit').disabled = true;
+    input.disabled = true;
+    const fb = document.getElementById('vocab-input-feedback');
+    fb.innerHTML = `
+      <div class="feedback-box ${correct?'ok':'ko'}">
+        <div class="fb-title">${correct? '✅ Correct !' : '❌ Pas tout à fait'}</div>
+        <div class="solution-line">${word.c} se dit <strong>${word.p}</strong> et signifie « ${word.m} ».</div>
+      </div>
+    `;
+    showRunnerNext(correct);
+  };
+  document.getElementById('vocab-input-submit').addEventListener('click', submit);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+}
+
+function normalizeAnswer(s){
+  return s.trim().toLowerCase()
+    .replace(/[āáǎà]/g,'a').replace(/[ēéěè]/g,'e').replace(/[īíǐì]/g,'i')
+    .replace(/[ōóǒò]/g,'o').replace(/[ūúǔù]/g,'u').replace(/[ǖǘǚǜü]/g,'u')
+    .replace(/\s+/g,'');
+}
+
+function renderVocabFlash(word, body, footer){
+  body.innerHTML = `
+    <div class="flashcard" id="flash-card">
+      <div class="fc-hanzi hanzi">${word.c}</div>
+      <div class="fc-hint">Touche la carte pour voir la réponse</div>
+    </div>
+    <div class="selfcheck-buttons" id="flash-buttons" style="display:none;">
+      <button class="sc-ko" id="flash-ko">😕 Je ne savais pas</button>
+      <button class="sc-ok" id="flash-ok">✅ Je savais</button>
+    </div>
+  `;
+  const card = document.getElementById('flash-card');
+  card.addEventListener('click', ()=>{
+    card.innerHTML = `
+      <div class="fc-pinyin">${word.p}</div>
+      <div class="fc-meaning">${word.m}</div>
+    `;
+    document.getElementById('flash-buttons').style.display = 'flex';
+  }, {once:true});
+
+  body.querySelector('#flash-buttons').addEventListener('click', (e)=>{
+    if(e.target.id === 'flash-ok'){ handleAnswer(true, null); }
+    else if(e.target.id === 'flash-ko'){ handleAnswer(false, `${word.c} (${word.p}) : « ${word.m} »`); }
+  });
+}
+
+function showRunnerNext(correct){
+  const footer = document.getElementById('runner-footer');
+  footer.innerHTML = `<button class="btn btn-primary" id="next-step-btn">${state.runner.index+1>=state.runner.items.length ? 'Voir le résultat' : 'Question suivante'}</button>`;
+  document.getElementById('next-step-btn').addEventListener('click', ()=>{
+    state.runner.index++;
+    renderRunnerStep();
+  });
+}
+
+function handleAnswer(correct, explanationText){
+  const r = state.runner;
+  if(correct){
+    r.correctCount++;
+    r.pointsEarned += 10;
+    popStamp('好');
+  }
+  if(state.runner.mode !== 'flash' && state.runner.mode !== 'input'){
+    // QCM path: show inline feedback then next button
+    const body = document.getElementById('runner-body');
+    const fb = document.createElement('div');
+    fb.className = 'feedback-box ' + (correct ? 'ok' : 'ko');
+    fb.innerHTML = `<div class="fb-title">${correct ? '✅ Correct !' : '❌ Pas tout à fait'}</div><div class="solution-line">${explanationText}</div>`;
+    body.appendChild(fb);
+  }
+  // bump word-seen counter live (don't double count for flash, counted separately)
+  state.user.wordsSeen = (state.user.wordsSeen||0) + (state.runner.mode!=='flash' ? 1 : 0);
+  showRunnerNext(correct);
+}
+
+async function finishRunner(){
+  const r = state.runner;
+  const total = r.items.length;
+  const pct = total ? Math.round((r.correctCount/total)*100) : 0;
+
+  // Update category mastery for vocab mode
+  if(r.catId){
+    const key = r.catId;
+    const prev = state.user.charScores[key] || {bestSeen:0};
+    if(r.correctCount > (prev.bestSeen||0)){
+      prev.bestSeen = r.correctCount;
+    }
+    if(r.correctCount === total){
+      prev.bestSeen = total;
+    }
+    state.user.charScores[key] = prev;
+    state.user.wordsSeen = (state.user.wordsSeen||0); // already incremented per-answer
+  }
+
+  state.user.points += r.pointsEarned;
+  state.user.exosDone = (state.user.exosDone||0) + 1;
+  await persistUser();
+  refreshHomeStats();
+
+  document.getElementById('result-score').textContent = `${r.correctCount} / ${total}`;
+  document.getElementById('result-points-num').textContent = r.pointsEarned;
+  document.getElementById('result-stamp').textContent = pct === 100 ? '满分' : (pct >= 70 ? '好' : '加油');
+  document.getElementById('result-sub').textContent =
+    pct === 100 ? 'Parfait ! Tu maîtrises cette série.' :
+    pct >= 70 ? 'Bien joué, continue comme ça !' :
+    'Continue à t\'entraîner, tu vas y arriver.';
+
+  document.getElementById('result-continue').onclick = ()=>{
+    if(r.catId) { renderVocabList(); showScreen('screen-vocab-list'); }
+    else { renderCahierList(); showScreen('screen-cahier-list'); }
+  };
+  document.getElementById('result-retry').onclick = ()=>{
+    if(r.catId) startVocabExercise(state.currentVocabCat, r.mode);
+    else startCahierExercise(state.currentChapter, state.currentExercise);
+  };
+
+  showScreen('screen-result');
+}
+
+// ===================== CAHIER EXERCISE RUNNER (selfcheck + qcm) =====================
+function startCahierExercise(chap, exo){
+  state.currentExercise = exo;
+  state.runner = {
+    items: exo.items.map((it,i)=>({...it, _i:i})),
+    index: 0,
+    correctCount: 0,
+    pointsEarned: 0,
+    mode: exo.type,
+    sourceLabel: exo.title,
+    chapId: chap.id,
+    exoId: exo.id
+  };
+  document.getElementById('runner-title').textContent = exo.title;
+  document.getElementById('runner-exit').onclick = ()=>{
+    renderChapterExercises(chap);
+    showScreen('screen-chapter');
+  };
+  renderRunnerStep2();
+  showScreen('screen-runner');
+}
+
+function renderRunnerStep2(){
+  const r = state.runner;
+  if(r.mode === 'qcm' || r.mode === 'selfcheck'){
+    if(r.index >= r.items.length){ finishCahierRunner(); return; }
+    renderRunnerCounter();
+    const body = document.getElementById('runner-body');
+    const footer = document.getElementById('runner-footer');
+    footer.innerHTML = '';
+    const item = r.items[r.index];
+    if(r.mode === 'qcm') renderCahierQCM(item, body, footer);
+    else renderCahierSelfcheck(item, body, footer);
+  }
+}
+function renderCahierQCM(item, body, footer){
+  body.innerHTML = `
+    <div class="prompt-card"><div class="sentence hanzi">${item.prompt}</div></div>
+    <div class="options-grid" id="opt-grid"></div>
+  `;
+  const grid = document.getElementById('opt-grid');
+  const optionOrder = item.options.map((opt,i)=>({opt,i}));
+  shuffle(optionOrder).forEach(({opt,i})=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn hanzi';
+    b.textContent = opt;
+    b.addEventListener('click', ()=>{
+      const correct = i === item.answer;
+      document.querySelectorAll('#opt-grid .opt-btn').forEach((o,idx)=>{
+        o.disabled = true;
+      });
+      // mark correct/wrong by re-deriving original index via text match
+      document.querySelectorAll('#opt-grid .opt-btn').forEach(o=>{
+        if(o.textContent === item.options[item.answer]) o.classList.add('correct');
+        else if(o === b && !correct) o.classList.add('wrong');
+      });
+      const body2 = document.getElementById('runner-body');
+      const fb = document.createElement('div');
+      fb.className = 'feedback-box ' + (correct ? 'ok' : 'ko');
+      fb.innerHTML = `<div class="fb-title">${correct ? '✅ Correct !' : '❌ Pas tout à fait'}</div><div class="solution-line">${item.explanation}</div>`;
+      body2.appendChild(fb);
+      handleCahierAnswer(correct);
+    });
+    grid.appendChild(b);
+  });
+}
+
+function renderCahierSelfcheck(item, body, footer){
+  body.innerHTML = `
+    <div class="prompt-card"><div class="sentence hanzi">${item.prompt}</div></div>
+    <div class="input-area">
+      <input type="text" id="sc-input" placeholder="Écris ta réponse en chinois..." autocomplete="off">
+      <button class="btn btn-primary" id="sc-reveal">Voir la solution</button>
+    </div>
+    <div id="sc-feedback"></div>
+  `;
+  document.getElementById('sc-input').focus();
+  document.getElementById('sc-reveal').addEventListener('click', ()=>{
+    document.getElementById('sc-input').disabled = true;
+    document.getElementById('sc-reveal').disabled = true;
+    const fb = document.getElementById('sc-feedback');
+    fb.innerHTML = `
+      <div class="feedback-box ok">
+        <div class="fb-title">💡 Solution proposée</div>
+        <div class="solution-line hanzi">${item.solution}</div>
+      </div>
+      <div class="selfcheck-buttons">
+        <button class="sc-ko" id="sc-wrong-btn">😕 J'étais loin</button>
+        <button class="sc-ok" id="sc-right-btn">✅ J'avais juste / presque</button>
+      </div>
+    `;
+    document.getElementById('sc-right-btn').addEventListener('click', ()=> handleCahierAnswer(true));
+    document.getElementById('sc-wrong-btn').addEventListener('click', ()=> handleCahierAnswer(false));
+  });
+}
+
+function handleCahierAnswer(correct){
+  const r = state.runner;
+  if(correct){ r.correctCount++; r.pointsEarned += 10; popStamp('好'); }
+  const footer = document.getElementById('runner-footer');
+  footer.innerHTML = `<button class="btn btn-primary" id="next-step-btn">${r.index+1>=r.items.length ? 'Voir le résultat' : 'Question suivante'}</button>`;
+  document.getElementById('next-step-btn').addEventListener('click', ()=>{
+    r.index++;
+    renderRunnerStep2();
+  });
+}
+
+async function finishCahierRunner(){
+  const r = state.runner;
+  const total = r.items.length;
+  const pct = total ? Math.round((r.correctCount/total)*100) : 0;
+
+  const chapKey = 'cahier:'+r.chapId;
+  const prev = state.user.charScores[chapKey] || {exosDone:0, exoIds:[]};
+  if(!prev.exoIds.includes(r.exoId)){
+    prev.exoIds.push(r.exoId);
+    prev.exosDone = prev.exoIds.length;
+  }
+  state.user.charScores[chapKey] = prev;
+
+  state.user.points += r.pointsEarned;
+  state.user.exosDone = (state.user.exosDone||0) + 1;
+  await persistUser();
+  refreshHomeStats();
+
+  document.getElementById('result-score').textContent = `${r.correctCount} / ${total}`;
+  document.getElementById('result-points-num').textContent = r.pointsEarned;
+  document.getElementById('result-stamp').textContent = pct === 100 ? '满分' : (pct >= 70 ? '好' : '加油');
+  document.getElementById('result-sub').textContent =
+    pct === 100 ? 'Parfait ! Tu maîtrises cet exercice.' :
+    pct >= 70 ? 'Bien joué, continue comme ça !' :
+    'Continue à t\'entraîner, tu vas y arriver.';
+
+  document.getElementById('result-continue').onclick = ()=>{
+    renderChapterExercises(state.currentChapter);
+    showScreen('screen-chapter');
+  };
+  document.getElementById('result-retry').onclick = ()=>{
+    startCahierExercise(state.currentChapter, state.currentExercise);
+  };
+
+  showScreen('screen-result');
+}
+
+// ===================== LEADERBOARD =====================
+async function renderLeaderboard(){
+  const wrap = document.getElementById('leaderboard-wrap');
+  wrap.innerHTML = '<div class="empty-state"><span class="ic">⏳</span>Chargement du classement…</div>';
+  const keys = await storageListKeys('user:', true);
+  const users = [];
+  for(const k of keys){
+    const u = await storageGet(k, true);
+    if(u) users.push(u);
+  }
+  users.sort((a,b)=> (b.points||0) - (a.points||0));
+
+  wrap.innerHTML = '';
+  if(users.length === 0){
+    wrap.innerHTML = '<div class="empty-state"><span class="ic">🏮</span>Aucun joueur pour le moment.</div>';
+    return;
+  }
+  users.forEach((u, i)=>{
+    const row = document.createElement('div');
+    row.className = 'lb-row' + (state.user && u.name === state.user.name ? ' me' : '');
+    row.innerHTML = `
+      <div class="lb-rank">${i+1}</div>
+      <div class="lb-name">${u.name}${state.user && u.name===state.user.name ? ' (toi)' : ''}</div>
+      <div class="lb-pts">${u.points||0} pts</div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+</script>
+</body>
+</html>
