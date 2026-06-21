@@ -801,6 +801,28 @@ footer.legal{
 
 <div class="stamp-pop" id="stamp-pop">好</div>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, collection, getDocs
+  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDAolNXYHToMQHyR19pPnb5VTHcP6cZRbk",
+    authDomain: "cahier-chinois.firebaseapp.com",
+    projectId: "cahier-chinois",
+    storageBucket: "cahier-chinois.firebasestorage.app",
+    messagingSenderId: "1031221022636",
+    appId: "1:1031221022636:web:34f00a4b42e6b1d45e3409"
+  };
+
+  const fbApp = initializeApp(firebaseConfig);
+  const db = getFirestore(fbApp);
+
+  window.fb = { db, doc, getDoc, setDoc, collection, getDocs };
+  window.fbReady = true;
+  window.dispatchEvent(new Event('fb-ready'));
+</script>
 <script>
 // Vocabulaire chinois 6e LVB - organisé par catégorie
 const VOCAB_CATEGORIES = [
@@ -1548,7 +1570,9 @@ const CAHIER_CHAPTERS = [
   }
 ];
 
-// ===================== STORAGE HELPERS =====================
+</script>
+<script>
+// ===================== STORAGE HELPERS (Firebase Firestore) =====================
 // Simple obfuscation for passwords (NOT real security - just avoids plaintext storage)
 function hashPass(pass){
   let h = 0;
@@ -1556,23 +1580,36 @@ function hashPass(pass){
   return 'h' + h.toString(36) + pass.length;
 }
 
+// Firestore doesn't allow ':' or '/' cleanly as doc IDs in all cases, so we sanitize.
+function sanitizeKey(key){
+  return key.replace(/[:/]/g, '__');
+}
+
 async function storageGet(key, shared){
   try{
-    const res = await window.storage.get(key, !!shared);
-    return res ? JSON.parse(res.value) : null;
-  }catch(e){ return null; }
+    const docRef = window.fb.doc(window.fb.db, 'app_storage', sanitizeKey(key));
+    const snap = await window.fb.getDoc(docRef);
+    return snap.exists() ? snap.data().value : null;
+  }catch(e){ console.error('storage get failed', e); return null; }
 }
 async function storageSet(key, value, shared){
   try{
-    await window.storage.set(key, JSON.stringify(value), !!shared);
+    const docRef = window.fb.doc(window.fb.db, 'app_storage', sanitizeKey(key));
+    await window.fb.setDoc(docRef, { key: key, value: value, updatedAt: Date.now() });
     return true;
   }catch(e){ console.error('storage set failed', e); return false; }
 }
 async function storageListKeys(prefix, shared){
   try{
-    const res = await window.storage.list(prefix, !!shared);
-    return res ? res.keys : [];
-  }catch(e){ return []; }
+    const colRef = window.fb.collection(window.fb.db, 'app_storage');
+    const snap = await window.fb.getDocs(colRef);
+    const keys = [];
+    snap.forEach(d=>{
+      const data = d.data();
+      if(!prefix || (data.key && data.key.startsWith(prefix))) keys.push(data.key);
+    });
+    return keys;
+  }catch(e){ console.error('storage list failed', e); return []; }
 }
 
 // ===================== APP STATE =====================
@@ -1602,6 +1639,16 @@ document.querySelectorAll('[data-back]').forEach(btn=>{
   btn.addEventListener('click', ()=> showScreen(btn.getAttribute('data-back')));
 });
 
+// Guards against the (rare, sub-100ms) race where a user clicks before the
+// Firebase ES module has finished its async initialization.
+function waitForFirebase(timeoutMs){
+  if(window.fbReady) return Promise.resolve(true);
+  return new Promise(resolve=>{
+    const t = setTimeout(()=>resolve(!!window.fbReady), timeoutMs || 4000);
+    window.addEventListener('fb-ready', ()=>{ clearTimeout(t); resolve(true); }, {once:true});
+  });
+}
+
 // ===================== AUTH =====================
 const loginError = document.getElementById('login-error');
 const signupError = document.getElementById('signup-error');
@@ -1624,6 +1671,11 @@ document.getElementById('btn-signup').addEventListener('click', async ()=>{
   if(!name){ signupError.textContent = 'Choisis un prénom.'; return; }
   if(!pass || pass.length < 4){ signupError.textContent = 'Le mot de passe doit avoir au moins 4 caractères.'; return; }
   if(pass !== pass2){ signupError.textContent = 'Les mots de passe ne correspondent pas.'; return; }
+
+  signupError.textContent = 'Connexion au serveur...';
+  const fbOk = await waitForFirebase();
+  signupError.textContent = '';
+  if(!fbOk){ signupError.textContent = 'Le serveur ne répond pas. Vérifie ta connexion internet et réessaie.'; return; }
 
   const key = 'user:' + name.toLowerCase();
   const existing = await storageGet(key, true);
@@ -1649,6 +1701,11 @@ document.getElementById('btn-signin').addEventListener('click', async ()=>{
   const pass = document.getElementById('li-pass').value;
   loginError.textContent = '';
   if(!name || !pass){ loginError.textContent = 'Entre ton prénom et ton mot de passe.'; return; }
+
+  loginError.textContent = 'Connexion au serveur...';
+  const fbOk = await waitForFirebase();
+  loginError.textContent = '';
+  if(!fbOk){ loginError.textContent = 'Le serveur ne répond pas. Vérifie ta connexion internet et réessaie.'; return; }
 
   const key = 'user:' + name.toLowerCase();
   const existing = await storageGet(key, true);
